@@ -3,18 +3,35 @@ import java.io.*;
 
 class Paaren {
     public static void main(String[] args)
+        throws IOException
     {
         System.out.println("Hallo Welt.");
+
+        if (args.length != 1) {
+            System.err.println("Genau ein Dateiname zum Einlesen bitte.");
+            return;
+        }
+        ArrayList <Player> plist = readPlayerFile(args[0]);
+
+        System.out.println("Anzahl Spieler: " + plist.size());
+        for (int i = 0; i < plist.size(); ++i) {
+            System.out.println(plist.get(i).toString());
+        }
     }
-    private static ArrayList<Player> readPlayerFile(String filename) throws IOException {
+
+
+
+    private static ArrayList<Player> readPlayerFile(String filename)
+        throws IOException
+    {
         ArrayList<Player> plist = new ArrayList<Player>();
         BufferedReader in = new BufferedReader(new FileReader(filename));
         String line;
         while((line = in.readLine()) != null){
-            if(line != "" && !line.startsWith("#")) 
+            if(line == "" || line.startsWith("#"))
                 continue;
             String[] linepart = line.split(";");
-            if(line.length() != Player.PARAM){
+            if(linepart.length != Player.PARAM){
                 System.err.println("fehlerhafter Spieler: " + line);
                 continue;
             }

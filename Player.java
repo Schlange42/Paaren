@@ -93,4 +93,11 @@ class Player {
             return (strength + "-Dan");
         return ( +1 - strength + "-Kyu");
     }
+
+
+
+    public String toString() {
+        return name + ";" + surname + ";" + getStringStrength()
+            + ";" + land + ";" + club;
+    }
 }
