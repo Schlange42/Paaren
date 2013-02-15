@@ -1,12 +1,8 @@
 import java.util.*;
-
-    public enum Result {
+class Encounter{
+    enum Result {
         UNKNOWN, BLACK, WHITE, JIGO
     }
-class Encounter{
-    //enum Result {
-    //    UNKNOWN, BLACK, WHITE, JIGO
-    //}
     private Player black;
     private Player white;
     private int handicap;
@@ -27,7 +23,7 @@ class Encounter{
         this.handicap=handicap;
     }
     public int getHandicap(){
-        return Handicap;
+        return handicap;
     }
     public void setResult(Result result) {
         this.result=result;

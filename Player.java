@@ -1,7 +1,7 @@
 class Player {
 
-    public final int PARAM = 5; // number of ';'-separated parameters in
-                                // a player line
+    public static final int PARAM = 5; // number of ';'-separated parameters in
+				       // a player line
 
     private String surname;
     private String name;
