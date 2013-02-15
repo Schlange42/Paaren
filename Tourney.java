@@ -17,6 +17,8 @@ class Tourney {
     private HashMap <Player, Integer> sos;
     private HashMap <Player, Integer> sosos;
 
+    private int reducedHandi;
+
 
 
     public void addPlayer(Player p)
@@ -37,7 +39,7 @@ class Tourney {
 
 
 
-    public void makepairings() {
+    public void makepairings(int round) {
         updateScores();
         double[][] edges = new double[players.size()][(players.size()*(players.size()-1))/2];
         double[] cost = new double[(players.size()*(players.size()-1))/2];
@@ -55,5 +57,47 @@ class Tourney {
         }
         Simplex sp = new Simplex(edges,b,cost); 
         solution = sp.primal();
+        k=0;
+        for(int i=0; i<(players.size()*(players.size()-1))/2; i++){
+            boolean bw=true;
+            if(solution[i]==1) {
+                for(int j=0; j<players.size(); j++) {
+                    if(edges[j][i]==1 && !bw) {
+                        rounds.get(round).get(k).setBlack(players.get(j));
+                        bw=false;
+                    }
+                    if(edges[j][i]==1 && bw) {
+                        rounds.get(round).get(k).setWhite(players.get(j));
+                    }
+                }
+                Player black = rounds.get(round).get(k).getBlack();
+                Player white = rounds.get(round).get(k).getWhite();
+                if(Math.abs(mms.get(black)-mms.get(white))>reducedHandi) {
+                    if(mms.get(black)>mms.get(white)) {
+                        Player p = black;
+                        rounds.get(round).get(k).setWhite(black);
+                        rounds.get(round).get(k).setBlack(p);
+                        rounds.get(round).get(k).setHandicap(mms.get(black)-mms.get(white)-reducedHandi);
+                    }
+                } else {
+                    int blacksum=0, whitesum=0;
+                    for(int j=0; j<round;j++) {
+                        for(int t = 0; t<rounds.get(round).size();t++) {
+                            if(rounds.get(round).get(t).getBlack()==black)
+                                blacksum++;
+                            if(rounds.get(round).get(t).getBlack()==white)
+                                whitesum++;
+
+                        }
+                    }
+                    if(whitesum<blacksum) {
+                        Player p = black;
+                        rounds.get(round).get(k).setWhite(black);
+                        rounds.get(round).get(k).setBlack(p);
+                    }
+                }
+            }
+            k++;
+        }
     }
 }
